@@ -30,8 +30,12 @@ fun ScalableBox(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(boxColor)
-            .border(width = 2.dp, color = outlineColor, shape = RoundedCornerShape(12.dp))
-            .clickable { boxOnClick }
+            .border(
+                width = 2.dp,
+                color = outlineColor,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .clickable { boxOnClick.invoke() }
             .padding(16.dp)
     ) {
         content()

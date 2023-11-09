@@ -3,12 +3,16 @@ package com.nomaan.composeexample.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -68,5 +72,45 @@ fun ImageAndTextFieldPreview() {
                 Text(text = "Lorem ipsum dolor")
             }
         }
+    }
+}
+
+@Composable
+fun SpiralBox(childrenToRender: Int, colors: Array<Color>, rotationValue: Float = 0F) {
+    val boxColor = remember { mutableStateOf(colors.random()) }
+    val outlineColor = remember { mutableStateOf(colors.random()) }
+
+    ScalableBox(
+        boxColor = boxColor.value,
+        outlineColor = outlineColor.value,
+        boxOnClick = {
+            boxColor.value = colors.random()
+            outlineColor.value = colors.random()
+        },
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxSize()
+            .rotate(rotationValue)
+    ) {
+        if (childrenToRender > 0) {
+            SpiralBox(childrenToRender - 1, colors, 8F)
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF, widthDp = 300, heightDp = 300)
+fun SpiralBoxRecursive() {
+    val colors = arrayOf(
+        Color.Black,
+        Color.Blue,
+        Color.Red,
+        Color.Yellow,
+        Color.White,
+        Color.Green
+    )
+
+    Column {
+        SpiralBox(7, colors)
     }
 }
